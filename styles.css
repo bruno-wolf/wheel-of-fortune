@@ -210,6 +210,38 @@ button {
 	z-index: 1;
 }
 
+#message {
+	position: absolute;
+	height: 5rem;
+	width: 100%;
+	max-width: 460px;
+	top: 50%;
+	left: -20rem;
+	transform: translate(-50%, -50%);
+	background: #403e3e;
+	display: grid;
+	place-content: center;
+	border-radius: 1rem;
+	box-shadow: 0px 29px 15px -15px rgba(0, 0, 0, 0.3);
+	transition: left .3s ease-in-out;
+}
+#message.show {
+	left: 30%;
+}
+#message h1 {
+	color: #ffe1d5;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+#message h1 span {
+	color: #fff;
+	font-size: 3rem;
+	margin: 0 1rem 0 1rem;
+}
+
 button:hover,
 button:focus,
 button.selected {

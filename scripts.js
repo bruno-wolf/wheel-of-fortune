@@ -6,8 +6,11 @@
 	let deg = 0;
 	let startDeg = 5000;
 	let rotationTime = 2000;
+	const msgBoard = document.querySelector('#message');
+	const score = msgBoard.querySelector('h1 span');
 
 	startButton.addEventListener('click', () => {
+		msgBoard.classList.remove('show');
 		startButton.style.pointerEvents = 'none';
 		deg = Math.floor(startDeg + Math.random() * startDeg);
 		wheel.style.transition = `transform ${rotationTime}ms ease-out`;
@@ -25,7 +28,12 @@
 		const actualDeg = deg % 360;
 		// apply the actual angle
 		wheel.style.transform = `rotate(${actualDeg}deg)`;
-		checkResult(actualDeg);
+		let result = checkResult(actualDeg);
+		score.innerHTML = result;
+		msgBoard.classList.add('show');
+		setTimeout(() => {
+			msgBoard.classList.remove('show');
+		}, 3000);
 	});
 
 	// get positions
@@ -47,30 +55,32 @@
 		// rotation = parseInt(rotation.match(/\d+/g));
 		// console.warn(rotation);
 
-		if ((actualDeg > 337 && actualDeg < 360) || (actualDeg > 0 && actualDeg <= 22)) {
-			console.warn(350);
+		if (actualDeg > 337 && actualDeg < 360) {
+			return 350;
 		}
-
+		if (actualDeg > 0 && actualDeg <= 22) {
+			return 350;
+		}
 		if (actualDeg > 23 && actualDeg <= 68) {
-			console.warn(100);
+			return 100;
 		}
 		if (actualDeg > 69 && actualDeg <= 112) {
-			console.warn(50);
+			return 50;
 		}
 		if (actualDeg > 113 && actualDeg <= 158) {
-			console.warn(300);
+			return 300;
 		}
 		if (actualDeg > 159 && actualDeg <= 202) {
-			console.warn(250);
+			return 250;
 		}
 		if (actualDeg > 203 && actualDeg <= 247) {
-			console.warn(0);
+			return 0;
 		}
 		if (actualDeg > 248 && actualDeg <= 292) {
-			console.warn(150);
+			return 150;
 		}
 		if (actualDeg > 293 && actualDeg <= 337) {
-			console.warn(200);
+			return 200;
 		}
 	}
 })();
