@@ -33,7 +33,11 @@
 		const actualDeg = deg % 360;
 		// apply the actual angle
 		wheel.style.transform = `rotate(${actualDeg}deg)`;
-		let result = checkResult(actualDeg);
+		const result = checkResult(actualDeg);
+		showScore(result);
+	}
+
+	function showScore(result) {
 		score.innerHTML = result;
 		msgBoard.classList.add('show');
 		setTimeout(() => {
