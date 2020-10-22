@@ -4,52 +4,53 @@
 		return ctx.querySelector(sel);
 	}
 
-	const app = qs('#app');
-	const wheel = qs('#wheel', app);
-	const marker = qs('#marker', app);
-	const startButton = qs('#start');
-	const msgBoard = qs('#message');
-	const score = qs('h1 span', msgBoard);
-	let deg = 0;
-	let startDeg = 5000;
-	let rotationTime = 2000;
+	const wheel = {
+		container: qs('#app'),
+		element: qs('#wheel'),
+		marker: qs('#marker'),
+		button: qs('#start'),
+		deg: 0,
+		startDeg: 5000,
+		rotationTime: 2000
+	};
+
+	const message = {
+		board: qs('#message'),
+		score: qs('#message h1 span')
+	};
 
 	function rotateWheel() {
-		msgBoard.classList.remove('show');
-		startButton.style.pointerEvents = 'none';
-		deg = Math.floor(startDeg + Math.random() * startDeg);
-		wheel.style.transition = `transform ${rotationTime}ms ease-out`;
-		wheel.style.transform = `rotate(${deg}deg)`;
-		wheel.classList.add('blur');
-		marker.classList.add('rotate');
+		message.board.classList.remove('show');
+		wheel.button.style.pointerEvents = 'none';
+		wheel.deg = Math.floor(wheel.startDeg + Math.random() * wheel.startDeg);
+		wheel.element.style.transition = `transform ${wheel.rotationTime}ms ease-out`;
+		wheel.element.style.transform = `rotate(${wheel.deg}deg)`;
+		wheel.element.classList.add('blur');
+		wheel.marker.classList.add('rotate');
 	}
 
 	function stopWheel() {
-		marker.classList.remove('rotate');
-		startButton.style.pointerEvents = 'auto';
+		wheel.marker.classList.remove('rotate');
+		wheel.button.style.pointerEvents = 'auto';
 		// clear the transition to handle the angle change on the next
-		wheel.style.transition = 'none';
-		// check actual angle
-		const actualDeg = deg % 360;
+		wheel.element.style.transition = 'none';
+		// get actual angle
+		const actualDeg = wheel.deg % 360;
 		// apply the actual angle
-		wheel.style.transform = `rotate(${actualDeg}deg)`;
+		wheel.element.style.transform = `rotate(${actualDeg}deg)`;
 		const result = checkResult(actualDeg);
 		showScore(result);
 	}
 
 	function showScore(result) {
-		score.innerHTML = result;
-		msgBoard.classList.add('show');
+		message.score.innerHTML = result;
+		message.board.classList.add('show');
 		setTimeout(() => {
-			msgBoard.classList.remove('show');
+			message.board.classList.remove('show');
 		}, 3000);
 	}
 
 	function checkResult(actualDeg) {
-		// var rotation = wheel.style.transform;
-		// rotation = parseInt(rotation.match(/\d+/g));
-		// console.warn(rotation);
-
 		if (actualDeg > 337 && actualDeg < 360) {
 			return 350;
 		}
@@ -79,7 +80,6 @@
 		}
 	}
 
-	startButton.addEventListener('click', rotateWheel);
-
-	wheel.addEventListener('transitionend', stopWheel);
+	wheel.button.addEventListener('click', rotateWheel);
+	wheel.element.addEventListener('transitionend', stopWheel);
 })();
