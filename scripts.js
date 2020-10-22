@@ -24,6 +24,23 @@
 		marker.classList.add('rotate');
 	}
 
+	function stopWheel() {
+		marker.classList.remove('rotate');
+		startButton.style.pointerEvents = 'auto';
+		// clear the transition to handle the angle change on the next
+		wheel.style.transition = 'none';
+		// check actual angle
+		const actualDeg = deg % 360;
+		// apply the actual angle
+		wheel.style.transform = `rotate(${actualDeg}deg)`;
+		let result = checkResult(actualDeg);
+		score.innerHTML = result;
+		msgBoard.classList.add('show');
+		setTimeout(() => {
+			msgBoard.classList.remove('show');
+		}, 3000);
+	}
+
 	function checkResult(actualDeg) {
 		// var rotation = wheel.style.transform;
 		// rotation = parseInt(rotation.match(/\d+/g));
@@ -60,20 +77,5 @@
 
 	startButton.addEventListener('click', rotateWheel);
 
-	wheel.addEventListener('transitionend', () => {
-		marker.classList.remove('rotate');
-		startButton.style.pointerEvents = 'auto';
-		// clear the transition to handle the angle change on the next
-		wheel.style.transition = 'none';
-		// check actual angle
-		const actualDeg = deg % 360;
-		// apply the actual angle
-		wheel.style.transform = `rotate(${actualDeg}deg)`;
-		let result = checkResult(actualDeg);
-		score.innerHTML = result;
-		msgBoard.classList.add('show');
-		setTimeout(() => {
-			msgBoard.classList.remove('show');
-		}, 3000);
-	});
+	wheel.addEventListener('transitionend', stopWheel);
 })();
