@@ -1,15 +1,20 @@
 (function() {
-	const app = document.querySelector('#app');
-	const wheel = app.querySelector('#wheel');
-	const marker = app.querySelector('#marker');
-	const startButton = document.querySelector('#start');
+	function qs(sel, ctx) {
+		ctx = ctx || document;
+		return ctx.querySelector(sel);
+	}
+
+	const app = qs('#app');
+	const wheel = qs('#wheel', app);
+	const marker = qs('#marker', app);
+	const startButton = qs('#start');
+	const msgBoard = qs('#message');
+	const score = qs('h1 span', msgBoard);
 	let deg = 0;
 	let startDeg = 5000;
 	let rotationTime = 2000;
-	const msgBoard = document.querySelector('#message');
-	const score = msgBoard.querySelector('h1 span');
 
-	startButton.addEventListener('click', () => {
+	function rotateWheel() {
 		msgBoard.classList.remove('show');
 		startButton.style.pointerEvents = 'none';
 		deg = Math.floor(startDeg + Math.random() * startDeg);
@@ -17,39 +22,8 @@
 		wheel.style.transform = `rotate(${deg}deg)`;
 		wheel.classList.add('blur');
 		marker.classList.add('rotate');
-	});
+	}
 
-	wheel.addEventListener('transitionend', () => {
-		marker.classList.remove('rotate');
-		startButton.style.pointerEvents = 'auto';
-		// clear the transition to handle the angle change on the next
-		wheel.style.transition = 'none';
-		// check actual angle
-		const actualDeg = deg % 360;
-		// apply the actual angle
-		wheel.style.transform = `rotate(${actualDeg}deg)`;
-		let result = checkResult(actualDeg);
-		score.innerHTML = result;
-		msgBoard.classList.add('show');
-		setTimeout(() => {
-			msgBoard.classList.remove('show');
-		}, 3000);
-	});
-
-	// get positions
-	// function getPositions(el) {
-	// 	var top, left, width, height;
-	// 	top = el.offsetTop;
-	// 	left = el.offsetLeft;
-	// 	width = el.offsetWidth;
-	// 	height = el.offsetHeight;
-	// 	return {
-	// 		left: left,
-	// 		right: left + width,
-	// 		top: top,
-	// 		bottom: top + height
-	// 	};
-	// }
 	function checkResult(actualDeg) {
 		// var rotation = wheel.style.transform;
 		// rotation = parseInt(rotation.match(/\d+/g));
@@ -83,4 +57,23 @@
 			return 200;
 		}
 	}
+
+	startButton.addEventListener('click', rotateWheel);
+
+	wheel.addEventListener('transitionend', () => {
+		marker.classList.remove('rotate');
+		startButton.style.pointerEvents = 'auto';
+		// clear the transition to handle the angle change on the next
+		wheel.style.transition = 'none';
+		// check actual angle
+		const actualDeg = deg % 360;
+		// apply the actual angle
+		wheel.style.transform = `rotate(${actualDeg}deg)`;
+		let result = checkResult(actualDeg);
+		score.innerHTML = result;
+		msgBoard.classList.add('show');
+		setTimeout(() => {
+			msgBoard.classList.remove('show');
+		}, 3000);
+	});
 })();
